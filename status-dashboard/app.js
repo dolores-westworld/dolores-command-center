@@ -14,9 +14,10 @@ const data = {
     { name: "github_ro_status_dashboard_dolores_command_center", scope: "dolores-westworld/dolores-command-center@main :: status-dashboard/**", status: "Planned" },
   ],
   x_intake: [
-    { id: "X-001", status: "Reviewed", title: "Claude Code tips (plan-first, >3 files stop, breakage/tests, repro-first)", source: "svpino" },
-    { id: "X-002", status: "Reviewed", title: "Reddit /json thread ingestion idea", source: "TheAhmadOsman" },
+    { id: "X-001", status: "Adapted", title: "Claude Code tips (plan-first, breakage/tests, repro-first)", source: "svpino" },
+    { id: "X-002", status: "Parked", title: "Reddit /json thread ingestion idea", source: "TheAhmadOsman" },
     { id: "X-003", status: "Reviewed", title: "Mission control dashboard w/ autonomous agents (flagged)", source: "koltregaskes" },
+    { id: "X-004", status: "New", title: "ryancarson link (pending review)", source: "ryancarson" },
   ],
   kanban: [
     {
@@ -506,6 +507,7 @@ function renderXIntake() {
     title.textContent = x.title;
     const badge = el("div", "kpill");
     badge.textContent = x.status;
+    badge.dataset.status = x.status;
     top.appendChild(title);
     top.appendChild(badge);
 

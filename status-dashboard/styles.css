@@ -404,6 +404,13 @@ body{
   margin-top:6px;
 }
 .kpill{
+
+.kpill[data-status="New"]{border-color:rgba(251,191,36,.26);}
+.kpill[data-status="Reviewed"]{border-color:rgba(34,211,238,.26);}
+.kpill[data-status="Parked"]{border-color:rgba(255,255,255,.14);}
+.kpill[data-status="Adapted"]{border-color:rgba(52,211,153,.26);}
+.kpill[data-status="Proposed"]{border-color:rgba(139,92,246,.28);}
+
   font-family:var(--mono);
   font-size:11px;
   border:1px solid rgba(255,255,255,.10);
