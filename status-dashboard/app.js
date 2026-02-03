@@ -348,13 +348,10 @@ function renderDecisions() {
   root.innerHTML = "";
 
   (data.decisions || []).forEach((d) => {
-    const card = el("button", "decision");
-    card.type = "button";
-    card.dataset.kind = "DECISION";
-    card.dataset.id = d.id;
+    const card = el("div", "decision");
 
     const k = el("div", "decision__k");
-    k.textContent = d.kind;
+    k.textContent = `${d.id} • ${d.kind}`;
 
     const t = el("div", "decision__t");
     t.textContent = d.title;
@@ -362,9 +359,22 @@ function renderDecisions() {
     const q = el("div", "decision__q");
     q.textContent = d.question;
 
+    // Inline expand (no modal required)
+    const more = document.createElement("details");
+    more.className = "decision__more";
+    const sum = document.createElement("summary");
+    sum.textContent = "More";
+    const body = document.createElement("div");
+    body.className = "decision__moreBody";
+    body.textContent = d.question;
+
+    more.appendChild(sum);
+    more.appendChild(body);
+
     card.appendChild(k);
     card.appendChild(t);
     card.appendChild(q);
+    card.appendChild(more);
 
     root.appendChild(card);
   });
