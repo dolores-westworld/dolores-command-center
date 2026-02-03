@@ -701,6 +701,30 @@ body{
 .cmd__meta{margin-top:6px;color:var(--muted2);font-size:11px;font-family:var(--mono);}
 
 
+
+.toast{
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: rgba(233,238,248,.85);
+  font-size: 12px;
+  font-family: var(--mono);
+  box-shadow: 0 14px 34px rgba(0,0,0,.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 300;
+}
+.toast--show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
 @keyframes modalIn{
   from{ transform: translateY(6px) scale(.99); opacity: 0; }
   to{ transform: translateY(0) scale(1); opacity: 1; }

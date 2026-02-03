@@ -263,6 +263,15 @@ function el(tag, cls) {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
   return node;
+function toast(msg){
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("toast--show");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => t.classList.remove("toast--show"), 1200);
+}
+
 }
 
 function tagClass(tag) {
@@ -599,6 +608,7 @@ function openFromSearch(it) {
 }
 
 function openLevel(levelObj) {
+  toast(`Open Level ${levelObj.level}`);
   if (levelObj.state === "COMPLETED") {
     openModal(
       `Level ${levelObj.level} • Completed`,
@@ -618,6 +628,7 @@ function openLevel(levelObj) {
 }
 
 function openKanbanCard(colName, titleText) {
+  toast(`Open Kanban: ${colName}`);
   const col = data.kanban.find((c) => c.name === colName);
   const item = col ? col.items.find((it) => it.title === titleText) : null;
   const d = (item && item.detail) || { truth: "Not specified.", blocker: "Not specified.", decision: "Not specified.", artifacts: [] };
@@ -645,6 +656,7 @@ function openKanbanCard(colName, titleText) {
 }
 
 function openWorkItem(titleText) {
+  toast(`Open Work Item`);
   const w = data.workingOn.find((x) => x.title === titleText);
   const d = (w && w.detail) || { doing: "Not specified.", notDoing: "Not specified.", doneMeans: [] };
 
@@ -670,6 +682,7 @@ function openWorkItem(titleText) {
 }
 
 function openActivityEvent(titleText, metaText) {
+  toast(`Open Activity`);
   const ev = data.feed.find((x) => x.title === titleText && x.meta === metaText);
   const d = (ev && ev.detail) || { changed: "Not specified.", safe: "Not specified.", ref: "" };
 
