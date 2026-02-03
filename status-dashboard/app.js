@@ -28,10 +28,6 @@ const data = {
       question: "Who/where will create+install the GitHub App and provide installation context so we can test safely?",
     },
   ],
-  decisions: [
-    { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
-    { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
-  ],
   connectors: [
     { name: "github_ro_status_dashboard_dolores_command_center", scope: "dolores-westworld/dolores-command-center@main :: status-dashboard/**", status: "Planned" },
   ],
@@ -342,7 +338,8 @@ function renderStats() {
   root.innerHTML = "";
 
   const totalCards = data.kanban.reduce((n, c) => n + c.items.length, 0);
-  const blocked = (data.kanban.find((c) => c.name === "Blocked")?.items.length) || 0;
+  const blockedCol = data.kanban.find((c) => c.name === "Blocked");
+  const blocked = (blockedCol && blockedCol.items && blockedCol.items.length) ? blockedCol.items.length : 0;
   const recentPass = (data.feed.filter((e) => e.title === "PASS" || e.title === "TEST PASS").length) || 0;
 
   const stats = [
@@ -969,7 +966,8 @@ function init() {
       const li = e.target.closest(".event");
       if (!li) return;
       const title = li.dataset.title;
-      const meta = li.querySelector(".event__meta")?.textContent || "";
+      const metaEl = li.querySelector(".event__meta");
+      const meta = (metaEl && metaEl.textContent) ? metaEl.textContent : "";
       if (!title || !meta) return;
       openActivityEvent(title, meta);
     });
