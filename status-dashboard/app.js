@@ -231,6 +231,12 @@ const data = {
   ],
   feed: [
     {
+      title: "UPDATED",
+      time: "2026-02-03 08:40 CT",
+      meta: "Provider router scaffold switched to API-first; decision log + secrets file path defined (keys/endpoints needed)",
+      detail: { changed: "Router scaffold updated to API-first; decision log header aligned; secrets env file path defined.", safe: "No secrets stored; no connectors enabled; no tests run.", ref: "provider-router.yaml / decisions.log" },
+    },
+    {
       title: "CREATED",
       time: "2026-02-02 16:20 CT",
       meta: "Level 7 loop started (dashboard updates via patches)",
