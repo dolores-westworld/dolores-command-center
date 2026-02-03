@@ -841,6 +841,9 @@ function toggleFocus() {
   btn.textContent = document.body.classList.contains("focus") ? "Unfocus" : "Focus";
 }
 
+// Mark JS as alive for on-page diagnostics.
+document.documentElement.classList.add("jsok");
+
 function init() {
   const on = (id, evt, fn) => {
     const el = document.getElementById(id);

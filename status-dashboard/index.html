@@ -6,6 +6,10 @@
     <meta name="color-scheme" content="dark" />
     <title>Andrew</title>
     <link rel="stylesheet" href="./styles.css?v=20260203-0849" />
+    <script>
+      // JS heartbeat: if app.js fails to parse/load, this banner stays visible.
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -38,6 +42,9 @@
         <div class="hero__title">
           <h1>Andrew</h1>
           <p>Clarity first. Noise dies here.</p>
+          <div class="jswarn" id="jswarn" role="status">
+            If this stays visible, the dashboard JavaScript failed to load. Hard refresh or re-open the tab.
+          </div>
         </div>
 
         <div class="hero__stats" id="stats" aria-label="High-level stats">
