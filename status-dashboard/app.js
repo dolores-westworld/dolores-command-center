@@ -845,64 +845,150 @@ function toggleFocus() {
 }
 
 function init() {
-  renderStats();
-  renderDecisions();
-  renderKanban();
-  renderWorklist();
-  renderLevels();
-  renderConnectors();
-  renderSkills();
-  renderXIntake();
-  renderFeed();
+  const on = (id, evt, fn) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener(evt, fn);
+  };
 
-  document.getElementById("btnFocus").addEventListener("click", toggleFocus);
+  const onSel = (sel, evt, fn) => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    el.addEventListener(evt, fn);
+  };
 
-  document.getElementById("btnSearch").addEventListener("click", openCommand);
-  document.getElementById("commandClose").addEventListener("click", closeCommand);
-  document.querySelector("#commandModal .modal__backdrop").addEventListener("click", closeCommand);
-  document.getElementById("commandInput").addEventListener("input", (e) => renderCommandResults(e.target.value));
+  const fatal = (err) => {
+    try {
+      console.error("Dashboard error:", err);
+      const main = document.getElementById("main");
+      if (!main) return;
+      const box = document.createElement("section");
+      box.className = "panel";
+      box.innerHTML = `
+        <div class="panel__head">
+          <div class="panel__title">
+            <h2>Dashboard Error</h2>
+            <span class="panel__sub">Safe fallback</span>
+          </div>
+        </div>
+        <div class="panel__body">
+          <p class="muted">The UI failed to initialize. Try a refresh. If it persists, paste the console error.</p>
+          <pre class="code">${String(err && (err.stack || err.message || err))}</pre>
+        </div>
+      `;
+      main.prepend(box);
+    } catch (_) {
+      // last resort: do nothing
+    }
+  };
 
+  try {
+    renderStats();
+    renderDecisions();
+    renderKanban();
+    renderWorklist();
+    renderLevels();
+    renderConnectors();
+    renderSkills();
+    renderXIntake();
+    renderFeed();
 
-  document.getElementById("levels").addEventListener("click", (e) => {
-    const btn = e.target.closest(".levelbtn");
-    if (!btn) return;
-    const lvl = Number(btn.dataset.level);
-    const obj = data.levels.find((l) => l.level === lvl);
-    if (!obj) return;
-    openLevel(obj);
-  });
+    on("btnFocus", "click", toggleFocus);
 
-  document.getElementById("kanban").addEventListener("click", (e) => {
-    const btn = e.target.closest(".cardbtn");
-    if (!btn) return;
-    const col = btn.dataset.col || "";
-    const title = btn.dataset.title || "";
-    if (!col || !title) return;
-    openKanbanCard(col, title);
-  });
+    on("btnSearch", "click", openCommand);
+    on("commandClose", "click", closeCommand);
+    onSel("#commandModal .modal__backdrop", "click", closeCommand);
+    on("commandInput", "input", (e) => renderCommandResults(e.target.value));
 
-  document.getElementById("worklist").addEventListener("click", (e) => {
-    const li = e.target.closest(".workitem");
-    if (!li) return;
-    const title = li.dataset.title;
-    if (!title) return;
-    openWorkItem(title);
-  });
+    on("levels", "click", (e) => {
+      const btn = e.target.closest(".levelbtn");
+      if (!btn) return;
+      const lvl = Number(btn.dataset.level);
+      const obj = data.levels.find((l) => l.level === lvl);
+      if (!obj) return;
+      openLevel(obj);
+    });
 
-  document.getElementById("feed").addEventListener("click", (e) => {
-    const li = e.target.closest(".event");
-    if (!li) return;
-    const title = li.dataset.title;
-    const meta = li.querySelector(".event__meta")?.textContent || "";
-    if (!title || !meta) return;
-    openActivityEvent(title, meta);
-  });
+    on("kanban", "click", (e) => {
+      const btn = e.target.closest(".cardbtn");
+      if (!btn) return;
+      const col = btn.dataset.col || "";
+      const title = btn.dataset.title || "";
+      if (!col || !title) return;
+      openKanbanCard(col, title);
+    });
 
-  document.getElementById("modalClose").addEventListener("click", closeModal);
-  document.querySelector("#levelModal .modal__backdrop").addEventListener("click", closeModal);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeModal(); closeCommand(); }
-  });
+    on("worklist", "click", (e) => {
+      const li = e.target.closest(".workitem");
+      if (!li) return;
+      const title = li.dataset.title;
+      if (!title) return;
+      openWorkItem(title);
+    });
+
+    on("connectors", "click", (e) => {
+      const li = e.target.closest(".listitem");
+      if (!li) return;
+      const name = li.dataset.name;
+      const obj = (data.connectors || []).find((c) => c.name === name);
+      if (!obj) return;
+      openModal("Connector", obj.name, [
+        { heading: "Scope", kind: "bullets", bullets: [obj.scope] },
+        { heading: "Status", kind: "bullets", bullets: [obj.status] },
+      ]);
+    });
+
+    on("skills", "click", (e) => {
+      const li = e.target.closest(".listitem");
+      if (!li) return;
+      const id = li.dataset.id;
+      const obj = (data.skills || []).find((s) => s.id === id);
+      if (!obj) return;
+      openModal("Skill", obj.id, [
+        { heading: "Name", kind: "bullets", bullets: [obj.name] },
+        { heading: "Status", kind: "bullets", bullets: [obj.status] },
+        { heading: "Purpose", kind: "bullets", bullets: [obj.purpose] },
+        { heading: "Source", kind: "bullets", bullets: [obj.source || ""] },
+      ].filter((s) => s.bullets[0] !== ""));
+    });
+
+    on("xintake", "click", (e) => {
+      const li = e.target.closest(".listitem");
+      if (!li) return;
+      const id = li.dataset.id;
+      const obj = (data.x_intake || []).find((x) => x.id === id);
+      if (!obj) return;
+      openModal("X Intake", obj.id, [
+        { heading: "Item", kind: "bullets", bullets: [obj.title] },
+        { heading: "Status", kind: "bullets", bullets: [obj.status] },
+        { heading: "Source", kind: "bullets", bullets: [obj.source] },
+      ]);
+    });
+
+    on("feed", "click", (e) => {
+      const li = e.target.closest(".event");
+      if (!li) return;
+      const title = li.dataset.title;
+      const meta = li.querySelector(".event__meta")?.textContent || "";
+      if (!title || !meta) return;
+      openActivityEvent(title, meta);
+    });
+
+    on("modalClose", "click", closeModal);
+    onSel("#levelModal .modal__backdrop", "click", closeModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+        closeCommand();
+      }
+    });
+
+    window.addEventListener("error", (e) => fatal(e.error || e.message));
+    window.addEventListener("unhandledrejection", (e) => fatal(e.reason));
+  } catch (e) {
+    fatal(e);
+  }
 }
 
 init();
