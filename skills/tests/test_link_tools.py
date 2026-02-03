@@ -84,7 +84,7 @@ def main():
         if not any("injection_policy.yaml" in str(x) for x in rules):
             print("FAIL")
             return 1
-        if not isinstance(stops, list) or "unsafe_prompt_injection" not in stops:
+        if not isinstance(stops, list) or "injection_detected" not in stops:
             print("FAIL")
             return 1
         if "owner_confirmation_required" not in stops:

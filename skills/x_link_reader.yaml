@@ -39,7 +39,7 @@ stop_conditions:
   - url_not_x
   - extraction_failed_without_content
   - login_required
-  - unsafe_prompt_injection
+  - injection_detected
   - owner_confirmation_required
 provider_affinity:
   primary: kimi_2_5
