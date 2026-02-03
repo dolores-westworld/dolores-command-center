@@ -2,45 +2,54 @@
 """injection_guard.py
 
 Pattern-based prompt-injection detector for untrusted extracted text.
-Outputs JSON to stdout: { safe: bool, matches: [pattern_strings] }
+Outputs JSON to stdout:
+  { "safe": true|false, "matches": ["<pattern label>", ...], "policy": "<policy id>" }
+
+Notes:
+- Matches are labels (human-readable), not regex strings.
+- Policy is emitted when unsafe (safe==false).
 """
 
 import json
 import re
 import sys
 
+POLICY_ON_DETECTED = "S1_stop_and_escalate"
+
 PATTERNS = [
-    r"ignore\s+previous\s+instructions",
-    r"disregard\s+all\s+prior\s+instructions",
-    r"system\s+prompt",
-    r"developer\s+message",
-    r"you\s+are\s+chatgpt",
-    r"do\s+not\s+follow\s+the\s+above",
-    r"override\s+your\s+instructions",
-    r"reveal\s+(the\s+)?(prompt|system\s+prompt|instructions)",
-    r"print\s+the\s+hidden\s+instructions",
-    r"exfiltrate",
-    r"send\s+your\s+api\s+key",
-    r"credentials?",
-    r"passwords?",
-    r"token",
-    r"curl\s+http",
-    r"run\s+this\s+command",
-    r"execute\s+the\s+following",
-    r"sudo\b",
-    r"rm\s+-rf",
-    r"do\s+anything\s+now",
+    ("ignore previous instructions", r"ignore\s+previous\s+instructions"),
+    ("disregard prior instructions", r"disregard\s+all\s+prior\s+instructions"),
+    ("system prompt", r"system\s+prompt"),
+    ("developer message", r"developer\s+message"),
+    ("you are chatgpt", r"you\s+are\s+chatgpt"),
+    ("override instructions", r"override\s+your\s+instructions"),
+    ("do not follow above", r"do\s+not\s+follow\s+the\s+above"),
+    ("reveal hidden instructions", r"reveal\s+(the\s+)?(prompt|system\s+prompt|instructions)"),
+    ("print hidden instructions", r"print\s+the\s+hidden\s+instructions"),
+    ("exfiltrate", r"exfiltrate"),
+    ("api key request", r"send\s+your\s+api\s+key"),
+    ("credentials request", r"credentials?"),
+    ("passwords request", r"passwords?"),
+    ("token request", r"token"),
+    ("run this command", r"run\s+this\s+command"),
+    ("execute the following", r"execute\s+the\s+following"),
+    ("sudo", r"sudo"),
+    ("rm -rf", r"rm\s+-rf"),
+    ("do anything now", r"do\s+anything\s+now"),
 ]
 
 
 def guard(text: str) -> dict:
-    t = (text or "")
-    hay = t.lower()
+    hay = (text or "")
     matches = []
-    for pat in PATTERNS:
-        if re.search(pat, hay, flags=re.IGNORECASE):
-            matches.append(pat)
-    return {"safe": len(matches) == 0, "matches": matches}
+    for label, rx in PATTERNS:
+        if re.search(rx, hay, flags=re.IGNORECASE):
+            matches.append(label)
+    safe = len(matches) == 0
+    out = {"safe": safe, "matches": matches}
+    if not safe:
+        out["policy"] = POLICY_ON_DETECTED
+    return out
 
 
 def main() -> int:
