@@ -1,4 +1,4 @@
-// Status Dashboard — static files only. Sample data only. No network calls.
+// Status Dashboard — static files only. Static data only (explicit). No network calls.
 
 const data = {
   stats: [],
@@ -12,6 +12,10 @@ const data = {
   ],
   connectors: [
     { name: "github_ro_status_dashboard_dolores_command_center", scope: "dolores-westworld/dolores-command-center@main :: status-dashboard/**", status: "Planned" },
+  ],
+  skills: [
+    // Fill with real skills as you approve them (no auto-install).
+    // { id: "S-001", status: "New", name: "...", purpose: "...", source: "..." }
   ],
   x_intake: [
     { id: "X-001", status: "Adapted", title: "Claude Code tips (plan-first, breakage/tests, repro-first)", source: "svpino" },
@@ -493,6 +497,52 @@ function renderConnectors() {
   });
 }
 
+function renderSkills() {
+  const root = document.getElementById("skills");
+  if (!root) return;
+  root.innerHTML = "";
+
+  const items = data.skills || [];
+  if (!items.length) {
+    const li = el("li", "listitem");
+    const top = el("div", "listitem__top");
+    const title = el("h3", "listitem__title");
+    title.textContent = "No skills yet";
+    const badge = el("div", "kpill");
+    badge.textContent = "Awaiting";
+    top.appendChild(title);
+    top.appendChild(badge);
+    const meta = el("div", "listitem__meta");
+    meta.textContent = "Send a skill link/screenshot; I’ll add it here as New.";
+    li.appendChild(top);
+    li.appendChild(meta);
+    root.appendChild(li);
+    return;
+  }
+
+  items.forEach((s) => {
+    const li = el("li", "listitem");
+    li.dataset.kind = "SKILL";
+    li.dataset.id = s.id;
+
+    const top = el("div", "listitem__top");
+    const title = el("h3", "listitem__title");
+    title.textContent = s.name;
+    const badge = el("div", "kpill");
+    badge.textContent = s.status;
+    badge.dataset.status = s.status;
+    top.appendChild(title);
+    top.appendChild(badge);
+
+    const meta = el("div", "listitem__meta");
+    meta.textContent = `${s.purpose} • ${s.source || ""} • ${s.id}`.trim();
+
+    li.appendChild(top);
+    li.appendChild(meta);
+    root.appendChild(li);
+  });
+}
+
 function renderXIntake() {
   const root = document.getElementById("xintake");
   if (!root) return;
@@ -779,6 +829,7 @@ function init() {
   renderWorklist();
   renderLevels();
   renderConnectors();
+  renderSkills();
   renderXIntake();
   renderFeed();
 
