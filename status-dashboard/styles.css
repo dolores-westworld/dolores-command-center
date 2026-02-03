@@ -542,6 +542,14 @@ body{
   font-size:12px;
 }
 
+
+.list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;}
+.listitem{border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:10px;background:rgba(255,255,255,.03);transition:transform 140ms ease,border-color 140ms ease;cursor:pointer;}
+.listitem:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.16);}
+.listitem__top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;}
+.listitem__title{margin:0;font-weight:720;font-size:13px;}
+.listitem__meta{margin-top:6px;color:var(--muted2);font-size:11px;font-family:var(--mono);}
+
 .footer{
   margin-top:14px;
   display:flex;

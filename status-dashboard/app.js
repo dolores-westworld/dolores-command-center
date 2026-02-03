@@ -1,11 +1,7 @@
 // Status Dashboard — static files only. Sample data only. No network calls.
 
 const data = {
-  stats: [
-    { label: "Active cards", value: "14", hint: "Sample" },
-    { label: "Blocked", value: "2", hint: "Sample" },
-    { label: "Recent passes", value: "5", hint: "Sample" },
-  ],
+  stats: [],
   decisions: [
     { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
     { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
@@ -13,6 +9,14 @@ const data = {
   decisions: [
     { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
     { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
+  ],
+  connectors: [
+    { name: "github_ro_status_dashboard_dolores_command_center", scope: "dolores-westworld/dolores-command-center@main :: status-dashboard/**", status: "Planned" },
+  ],
+  x_intake: [
+    { id: "X-001", status: "Reviewed", title: "Claude Code tips (plan-first, >3 files stop, breakage/tests, repro-first)", source: "svpino" },
+    { id: "X-002", status: "Reviewed", title: "Reddit /json thread ingestion idea", source: "TheAhmadOsman" },
+    { id: "X-003", status: "Reviewed", title: "Mission control dashboard w/ autonomous agents (flagged)", source: "koltregaskes" },
   ],
   kanban: [
     {
@@ -309,7 +313,18 @@ function tagClass(tag) {
 function renderStats() {
   const root = document.getElementById("stats");
   root.innerHTML = "";
-  data.stats.forEach((s) => {
+
+  const totalCards = data.kanban.reduce((n, c) => n + c.items.length, 0);
+  const blocked = (data.kanban.find((c) => c.name === "Blocked")?.items.length) || 0;
+  const recentPass = (data.feed.filter((e) => e.title === "PASS" || e.title === "TEST PASS").length) || 0;
+
+  const stats = [
+    { label: "Total cards", value: String(totalCards), hint: "From Kanban" },
+    { label: "Blocked", value: String(blocked), hint: "Needs unblocking" },
+    { label: "Recent passes", value: String(recentPass), hint: "From Activity" },
+  ];
+
+  stats.forEach((s) => {
     const box = el("div", "stat");
     const l = el("div", "stat__label");
     l.textContent = s.label;
@@ -324,35 +339,7 @@ function renderStats() {
   });
 }
 
-function renderDecisions() {
-  const root = document.getElementById("decisions");
-  if (!root) return;
-  root.innerHTML = "";
-
-  (data.decisions || []).forEach((d) => {
-    const card = el("button", "decision");
-    card.type = "button";
-    card.dataset.kind = "DECISION";
-    card.dataset.id = d.id;
-
-    const k = el("div", "decision__k");
-    k.textContent = d.kind;
-
-    const t = el("div", "decision__t");
-    t.textContent = d.title;
-
-    const q = el("div", "decision__q");
-    q.textContent = d.question;
-
-    card.appendChild(k);
-    card.appendChild(t);
-    card.appendChild(q);
-
-    root.appendChild(card);
-  });
-}
-
-function renderKanban() {
+function renderKanban()() {
   const root = document.getElementById("kanban");
   root.innerHTML = "";
   data.kanban.forEach((c) => {
@@ -477,6 +464,58 @@ function renderLevels() {
 
   group("Completed", "Levels 5–6", completed, "done");
   group("Remaining", "Levels 7–10", remaining, "todo");
+}
+
+function renderConnectors() {
+  const root = document.getElementById("connectors");
+  if (!root) return;
+  root.innerHTML = "";
+  (data.connectors || []).forEach((c) => {
+    const li = el("li", "listitem");
+    li.dataset.kind = "CONNECTOR";
+    li.dataset.name = c.name;
+
+    const top = el("div", "listitem__top");
+    const title = el("h3", "listitem__title");
+    title.textContent = c.name;
+    const badge = el("div", "kpill");
+    badge.textContent = c.status;
+    top.appendChild(title);
+    top.appendChild(badge);
+
+    const meta = el("div", "listitem__meta");
+    meta.textContent = c.scope;
+
+    li.appendChild(top);
+    li.appendChild(meta);
+    root.appendChild(li);
+  });
+}
+
+function renderXIntake() {
+  const root = document.getElementById("xintake");
+  if (!root) return;
+  root.innerHTML = "";
+  (data.x_intake || []).forEach((x) => {
+    const li = el("li", "listitem");
+    li.dataset.kind = "X_ITEM";
+    li.dataset.id = x.id;
+
+    const top = el("div", "listitem__top");
+    const title = el("h3", "listitem__title");
+    title.textContent = x.title;
+    const badge = el("div", "kpill");
+    badge.textContent = x.status;
+    top.appendChild(title);
+    top.appendChild(badge);
+
+    const meta = el("div", "listitem__meta");
+    meta.textContent = `X • ${x.source} • ${x.id}`;
+
+    li.appendChild(top);
+    li.appendChild(meta);
+    root.appendChild(li);
+  });
 }
 
 function renderFeed() {
@@ -737,6 +776,8 @@ function init() {
   renderKanban();
   renderWorklist();
   renderLevels();
+  renderConnectors();
+  renderXIntake();
   renderFeed();
 
   document.getElementById("btnFocus").addEventListener("click", toggleFocus);
