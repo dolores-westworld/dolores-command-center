@@ -116,6 +116,17 @@ def main():
             print("FAIL")
             return 1
 
+    # 6) Run link tools tests
+    extra = root / "tests" / "test_link_tools.py"
+    if not extra.exists():
+        print("FAIL")
+        return 1
+
+    r2 = subprocess.run([sys.executable, str(extra)], cwd=str(root.parent), capture_output=True, text=True)
+    if r2.returncode != 0:
+        print("FAIL")
+        return 1
+
     print("PASS")
     return 0
 
