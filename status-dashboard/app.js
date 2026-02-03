@@ -39,6 +39,16 @@ const data = {
       name: "In Evaluation",
       items: [
         {
+          title: "Drawer drill-down UX (bottom sheets)",
+          tags: ["cyan", "ux"],
+          detail: { truth: "Pending.", blocker: "Awaiting implementation.", decision: "Drawer on mobile only vs all sizes.", artifacts: [] },
+        },
+        {
+          title: "GitHub read-only connector (status-dashboard/**)",
+          tags: ["violet", "connector"],
+          detail: { truth: "Planned scope approved; enablement pending.", blocker: "Needs GitHub App creation surface/auth.", decision: "Create dolores-gatekeeper app and install on repo.", artifacts: [] },
+        },
+        {
           title: "Connector governance canon",
           tags: ["cyan", "governance"],
           detail: { truth: "Not specified.", blocker: "Not specified.", decision: "Not specified.", artifacts: [] },
