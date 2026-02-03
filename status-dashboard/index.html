@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Status Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar__left">
+        <div class="brand">
+          <span class="brand__dot" aria-hidden="true"></span>
+          <span class="brand__name">Status</span>
+          <span class="brand__tag">Internal Work Dashboard</span>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <div class="pill" role="status" aria-label="Mode">
+          <span class="pill__label">Mode</span>
+          <span class="pill__value">Static • Sample Data</span>
+        </div>
+        <button class="btn btn--ghost" id="btnFocus" type="button" title="Focus mode">
+          Focus
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="shell">
+      <section class="hero">
+        <div class="hero__title">
+          <h1>Work, governed.</h1>
+          <p>Clarity first. Noise dies here.</p>
+        </div>
+
+        <div class="hero__stats" id="stats" aria-label="High-level stats">
+          <!-- rendered by app.js -->
+        </div>
+      </section>
+
+      <section class="grid">
+        <!-- Kanban -->
+        <section class="panel panel--wide" aria-label="Kanban board">
+          <div class="panel__head">
+            <div class="panel__title">
+              <h2>Kanban</h2>
+              <span class="panel__sub">Ideas → Evaluation → Spec → Blocked → Completed</span>
+            </div>
+            <div class="panel__actions">
+              <div class="hint">Tip: hover cards</div>
+            </div>
+          </div>
+          <div class="kanban" id="kanban" aria-label="Kanban columns">
+            <!-- rendered by app.js -->
+          </div>
+        </section>
+
+        <!-- Working on -->
+        <section class="panel" aria-label="What we’re working on">
+          <div class="panel__head">
+            <div class="panel__title">
+              <h2>What We’re Working On</h2>
+              <span class="panel__sub">Top 5</span>
+            </div>
+          </div>
+          <ol class="worklist" id="worklist">
+            <!-- rendered by app.js -->
+          </ol>
+        </section>
+
+        <!-- Levels -->
+        <section class="panel" aria-label="Levels">
+          <div class="panel__head">
+            <div class="panel__title">
+              <h2>Levels</h2>
+              <span class="panel__sub">Tap to open</span>
+            </div>
+          </div>
+
+          <div class="levels" id="levels" aria-label="Levels list">
+            <!-- rendered by app.js -->
+          </div>
+        </section>
+
+        <!-- Activity -->
+        <section class="panel" aria-label="Activity feed">
+          <div class="panel__head">
+            <div class="panel__title">
+              <h2>Activity</h2>
+              <span class="panel__sub">Recent</span>
+            </div>
+          </div>
+          <ul class="feed" id="feed">
+            <!-- rendered by app.js -->
+          </ul>
+        </section>
+      </section>
+
+      <footer class="footer">
+        <div class="footer__left">
+          <span class="footer__mono">No connectors • No network • Static artifacts</span>
+        </div>
+        <div class="footer__right">
+          <span class="footer__muted">Built for focus, not frenzy.</span>
+        </div>
+      </footer>
+    </main>
+
+    <div class="modal" id="levelModal" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-close="true"></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal__head">
+          <div>
+            <div class="modal__eyebrow" id="modalEyebrow">Detail</div>
+            <h3 class="modal__title" id="modalTitle">Details</h3>
+          </div>
+          <button class="btn btn--ghost modal__close" type="button" id="modalClose" aria-label="Close">
+            Close
+          </button>
+        </div>
+        <div class="modal__body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <div class="glow glow--a" aria-hidden="true"></div>
+    <div class="glow glow--b" aria-hidden="true"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
