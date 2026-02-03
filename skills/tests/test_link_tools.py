@@ -59,12 +59,17 @@ def main():
         print("FAIL")
         return 1
 
-    # 3) Skills declare safe_fetch + injection_guard flow and unsafe stop condition
+    # 3) Skills declare safe_fetch + injection_guard flow and injection policy stop conditions
     val = repo / "skills" / "validate_skills.py"
     spec = __import__("importlib.util").util.spec_from_file_location("validate_skills", str(val))
     mod = __import__("importlib.util").util.module_from_spec(spec)
     assert spec and spec.loader
     spec.loader.exec_module(mod)
+
+    pol = repo / "skills" / "policy" / "injection_policy.yaml"
+    if not pol.exists():
+        print("FAIL")
+        return 1
 
     for nm in ("link_reader_generic", "x_link_reader"):
         doc = mod.load_yaml(repo / "skills" / f"{nm}.yaml")
@@ -76,7 +81,13 @@ def main():
         if not any("injection_guard.py" in str(x) for x in rules):
             print("FAIL")
             return 1
+        if not any("injection_policy.yaml" in str(x) for x in rules):
+            print("FAIL")
+            return 1
         if not isinstance(stops, list) or "unsafe_prompt_injection" not in stops:
+            print("FAIL")
+            return 1
+        if "owner_confirmation_required" not in stops:
             print("FAIL")
             return 1
 

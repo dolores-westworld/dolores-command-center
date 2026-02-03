@@ -1,0 +1,8 @@
+injection_policy:
+  on_detected: stop_and_escalate
+  require_owner_confirmation: true
+  allowed_output_when_blocked:
+    - availability
+    - canonical_url
+    - injection_matches
+    - unknowns
