@@ -1,0 +1,28 @@
+name: fallback_protocol
+version: "1.0"
+purpose: Define safe fallback behavior when a provider is unavailable (no retries, no expansion).
+inputs:
+  - name: task_record
+    type: yaml
+    required: true
+  - name: failed_provider
+    type: string
+    required: true
+  - name: fallback_provider
+    type: string
+    required: true
+outputs:
+  - name: fallback_action
+    type: yaml
+    notes: "{task_id, action: use_fallback|stop, reason, handoff_packet?}"
+rules:
+  - No retries.
+  - No scope expansion.
+  - If fallback changes capability class (for example, execution), stop.
+stop_conditions:
+  - Fallback provider cannot satisfy task type safely.
+  - Task requires execution and codex is unavailable.
+provider_affinity:
+  primary: system
+  fallback:
+    - codex

@@ -1,0 +1,25 @@
+name: routing_decision
+version: "1.0"
+purpose: Select primary and fallback provider for a task using registry tags and provider affinity.
+inputs:
+  - name: task_record
+    type: yaml
+    required: true
+  - name: registry
+    type: yaml
+    required: true
+outputs:
+  - name: routing
+    type: yaml
+    notes: "{task_id, task_type, primary_provider, fallback_provider, stop_reason?}"
+rules:
+  - No retries; choose at most one primary and one fallback.
+  - No scope expansion during routing.
+  - If provider surface unavailable, stop and request owner action.
+stop_conditions:
+  - Requested provider not in enum or not enabled by config.
+  - Task requires execution but primary provider is not codex.
+provider_affinity:
+  primary: system
+  fallback:
+    - codex

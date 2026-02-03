@@ -1,0 +1,46 @@
+skills:
+  - name: task_intake
+    file: skills/task_intake.yaml
+    primary_provider: system
+    fallback_provider: codex
+    tags: [plan, governance]
+  - name: routing_decision
+    file: skills/routing_decision.yaml
+    primary_provider: system
+    fallback_provider: codex
+    tags: [plan, governance]
+  - name: governance_gate
+    file: skills/governance_gate.yaml
+    primary_provider: opus
+    fallback_provider: codex
+    tags: [governance, review]
+  - name: analysis_synthesis
+    file: skills/analysis_synthesis.yaml
+    primary_provider: kimi_2_5
+    fallback_provider: codex
+    tags: [analyze]
+  - name: spec_drafting
+    file: skills/spec_drafting.yaml
+    primary_provider: codex
+    fallback_provider: kimi_2_5
+    tags: [plan, build]
+  - name: execution_guard
+    file: skills/execution_guard.yaml
+    primary_provider: codex
+    fallback_provider: system
+    tags: [governance, build]
+  - name: decision_logging
+    file: skills/decision_logging.yaml
+    primary_provider: system
+    fallback_provider: codex
+    tags: [governance]
+  - name: fallback_protocol
+    file: skills/fallback_protocol.yaml
+    primary_provider: system
+    fallback_provider: codex
+    tags: [governance, plan]
+  - name: final_review
+    file: skills/final_review.yaml
+    primary_provider: opus
+    fallback_provider: codex
+    tags: [review, governance]

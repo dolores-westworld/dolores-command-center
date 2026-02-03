@@ -1,0 +1,25 @@
+name: spec_drafting
+version: "1.0"
+purpose: Draft a bounded, checkable spec and acceptance criteria for an approved task.
+inputs:
+  - name: task_record
+    type: yaml
+    required: true
+  - name: templates
+    type: text
+    required: false
+outputs:
+  - name: spec
+    type: markdown
+    notes: Includes acceptance criteria + Breakage/Tests + (if bugfix) Repro-first
+rules:
+  - Include Goal, Scope, Out-of-scope, Acceptance Criteria, Breakage/Tests.
+  - If bugfix, include Repro-first section before fix steps.
+  - No implementation; spec only.
+stop_conditions:
+  - Task scope cannot be bounded into checkable acceptance criteria.
+  - Requires secrets/credentials or new permissions without approval.
+provider_affinity:
+  primary: codex
+  fallback:
+    - kimi_2_5

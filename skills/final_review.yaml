@@ -1,0 +1,23 @@
+name: final_review
+version: "1.0"
+purpose: Perform a final safety and fidelity review of outputs against spec (no execution).
+inputs:
+  - name: spec
+    type: markdown
+    required: true
+  - name: deliverables
+    type: text
+    required: true
+outputs:
+  - name: review
+    type: yaml
+    notes: "{status: PASS|FAIL, reasons[]}"
+rules:
+  - Check against acceptance criteria and guardrails.
+  - List only concrete failures; no redesign during review.
+stop_conditions:
+  - Spec is missing acceptance criteria or Breakage/Tests section.
+provider_affinity:
+  primary: opus
+  fallback:
+    - codex

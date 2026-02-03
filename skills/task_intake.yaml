@@ -1,0 +1,25 @@
+name: task_intake
+version: "1.0"
+purpose: Normalize an incoming request into a bounded task record (no execution).
+inputs:
+  - name: raw_request
+    type: text
+    required: true
+  - name: context
+    type: text
+    required: false
+outputs:
+  - name: task_record
+    type: yaml
+    notes: "{task_id, summary, constraints, risks, questions, next_step}"
+rules:
+  - Do not execute; produce a bounded task record only.
+  - If ambiguous/high-impact, ask up to 3 clarifying questions.
+  - Record explicit constraints and stop conditions.
+stop_conditions:
+  - Request implies secrets/credentials handling or storing secrets.
+  - Request implies irreversible actions without explicit approval.
+provider_affinity:
+  primary: system
+  fallback:
+    - codex

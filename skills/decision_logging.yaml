@@ -1,0 +1,33 @@
+name: decision_logging
+version: "1.0"
+purpose: Append a routing/governance decision to an append-only decision log.
+inputs:
+  - name: task_id
+    type: string
+    required: true
+  - name: provider
+    type: string
+    required: true
+  - name: decision
+    type: string
+    required: true
+  - name: assumptions
+    type: string
+    required: true
+  - name: needs_opus_review
+    type: boolean
+    required: true
+outputs:
+  - name: log_line
+    type: text
+    notes: timestamp | task_id | provider | decision | assumptions | needs_opus_review
+rules:
+  - Append-only; never rewrite prior entries.
+  - Do not include secrets or tokens in log entries.
+stop_conditions:
+  - Log path is not explicitly configured.
+  - Decision text contains secrets/credentials.
+provider_affinity:
+  primary: system
+  fallback:
+    - codex

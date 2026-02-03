@@ -1,0 +1,24 @@
+name: analysis_synthesis
+version: "1.0"
+purpose: Synthesize provided content into structured insights (no execution).
+inputs:
+  - name: source_material
+    type: text
+    required: true
+  - name: question
+    type: text
+    required: false
+outputs:
+  - name: synthesis
+    type: markdown
+    notes: Summary, key points, risks, assumptions, open questions
+rules:
+  - Use only provided content; do not assume external access.
+  - Flag uncertainty; avoid prescriptive recommendations unless asked.
+stop_conditions:
+  - Source material is missing/insufficient for a safe answer.
+  - Request requires external browsing/network.
+provider_affinity:
+  primary: kimi_2_5
+  fallback:
+    - codex

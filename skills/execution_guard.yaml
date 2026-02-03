@@ -1,0 +1,25 @@
+name: execution_guard
+version: "1.0"
+purpose: Enforce execution guardrails for any build/patch work (pre-flight).
+inputs:
+  - name: spec
+    type: markdown
+    required: true
+  - name: planned_changes
+    type: yaml
+    required: false
+outputs:
+  - name: execution_ok
+    type: yaml
+    notes: "{status: PASS|BLOCKED, reasons[], allowed_paths[], command_allowlist[]}"
+rules:
+  - Allowed paths must be under ~/clawdbot/work/.
+  - No secrets; no external network required.
+  - If >3 files impacted, stop and re-scope (trigger).
+stop_conditions:
+  - Any command outside allowlist is requested.
+  - Any file path outside allowlist is requested.
+provider_affinity:
+  primary: codex
+  fallback:
+    - system
