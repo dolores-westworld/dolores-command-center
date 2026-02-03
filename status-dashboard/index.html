@@ -24,6 +24,9 @@
           <span class="pill__label">Mode</span>
           <span class="pill__value">Static • Sample Data</span>
         </div>
+        <button class="btn btn--ghost" id="btnSearch" type="button" title="Search">
+          Search
+        </button>
         <button class="btn btn--ghost" id="btnFocus" type="button" title="Focus mode">
           Focus
         </button>
@@ -38,6 +41,21 @@
         </div>
 
         <div class="hero__stats" id="stats" aria-label="High-level stats">
+          <!-- rendered by app.js -->
+        </div>
+      </section>
+
+      <section class="panel panel--wide" aria-label="Decisions needed">
+        <div class="panel__head">
+          <div class="panel__title">
+            <h2>Decisions Needed</h2>
+            <span class="panel__sub">Only what requires a human decision</span>
+          </div>
+          <div class="panel__actions">
+            <div class="hint">Tap for detail</div>
+          </div>
+        </div>
+        <div class="decisions" id="decisions" aria-label="Decision items">
           <!-- rendered by app.js -->
         </div>
       </section>
@@ -123,6 +141,28 @@
           </button>
         </div>
         <div class="modal__body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <div class="modal" id="commandModal" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-close="true"></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="commandTitle">
+        <div class="modal__head">
+          <div>
+            <div class="modal__eyebrow">Command</div>
+            <h3 class="modal__title" id="commandTitle">Search</h3>
+          </div>
+          <button class="btn btn--ghost modal__close" type="button" id="commandClose" aria-label="Close">
+            Close
+          </button>
+        </div>
+        <div class="modal__body">
+          <div class="cmd">
+            <input class="cmd__input" id="commandInput" type="text" placeholder="Find a thing…" autocomplete="off" />
+            <div class="cmd__hint">Type to filter. Enter opens. Esc closes.</div>
+          </div>
+          <ul class="cmd__results" id="commandResults" aria-label="Search results"></ul>
+        </div>
       </div>
     </div>
 

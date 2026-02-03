@@ -6,6 +6,14 @@ const data = {
     { label: "Blocked", value: "2", hint: "Sample" },
     { label: "Recent passes", value: "5", hint: "Sample" },
   ],
+  decisions: [
+    { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
+    { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
+  ],
+  decisions: [
+    { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
+    { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
+  ],
   kanban: [
     {
       name: "Ideas",
@@ -286,6 +294,34 @@ function renderStats() {
   });
 }
 
+function renderDecisions() {
+  const root = document.getElementById("decisions");
+  if (!root) return;
+  root.innerHTML = "";
+
+  (data.decisions || []).forEach((d) => {
+    const card = el("button", "decision");
+    card.type = "button";
+    card.dataset.kind = "DECISION";
+    card.dataset.id = d.id;
+
+    const k = el("div", "decision__k");
+    k.textContent = d.kind;
+
+    const t = el("div", "decision__t");
+    t.textContent = d.title;
+
+    const q = el("div", "decision__q");
+    q.textContent = d.question;
+
+    card.appendChild(k);
+    card.appendChild(t);
+    card.appendChild(q);
+
+    root.appendChild(card);
+  });
+}
+
 function renderKanban() {
   const root = document.getElementById("kanban");
   root.innerHTML = "";
@@ -478,6 +514,88 @@ function openModal(header, titleText, sections) {
 function closeModal() {
   const modal = document.getElementById("levelModal");
   modal.setAttribute("aria-hidden", "true");
+
+function openCommand() {
+  const modal = document.getElementById("commandModal");
+  modal.setAttribute("aria-hidden", "false");
+  const input = document.getElementById("commandInput");
+  input.value = "";
+  input.focus();
+  renderCommandResults("");
+}
+
+function closeCommand() {
+  const modal = document.getElementById("commandModal");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function buildSearchIndex() {
+  const items = [];
+
+  data.kanban.forEach((col) => {
+    col.items.forEach((it) => items.push({ type: "KANBAN", title: it.title, meta: col.name, col: col.name }));
+  });
+
+  data.workingOn.forEach((w) => {
+    items.push({ type: "WORK", title: w.title, meta: w.pill, workTitle: w.title });
+  });
+
+  data.levels.forEach((l) => {
+    items.push({ type: "LEVEL", title: l.title, meta: l.subtitle, level: l.level });
+  });
+
+  data.feed.forEach((e) => {
+    items.push({ type: "ACTIVITY", title: e.meta, meta: e.time, actTitle: e.title, actMeta: e.meta });
+  });
+
+  return items;
+}
+
+const SEARCH_INDEX = buildSearchIndex();
+
+function renderCommandResults(query) {
+  const root = document.getElementById("commandResults");
+  root.innerHTML = "";
+
+  const q = (query || "").trim().toLowerCase();
+  const matches = SEARCH_INDEX.filter((it) => {
+    if (!q) return true;
+    return (it.title + " " + it.meta).toLowerCase().includes(q);
+  }).slice(0, 12);
+
+  matches.forEach((it, i) => {
+    const li = el("li", "cmd__item");
+    li.tabIndex = 0;
+    li.dataset.idx = String(i);
+
+    const title = el("div", "");
+    title.textContent = it.title;
+
+    const meta = el("div", "cmd__meta");
+    meta.textContent = `${it.type} • ${it.meta}`;
+
+    li.appendChild(title);
+    li.appendChild(meta);
+
+    li.addEventListener("click", () => openFromSearch(it));
+    li.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") openFromSearch(it);
+    });
+
+    root.appendChild(li);
+  });
+}
+
+function openFromSearch(it) {
+  closeCommand();
+  if (it.type === "KANBAN") return openKanbanCard(it.col, it.title);
+  if (it.type === "WORK") return openWorkItem(it.workTitle);
+  if (it.type === "LEVEL") {
+    const obj = data.levels.find((l) => l.level === it.level);
+    if (obj) return openLevel(obj);
+  }
+  if (it.type === "ACTIVITY") return openActivityEvent(it.actTitle, it.actMeta);
+}
 }
 
 function openLevel(levelObj) {
@@ -581,12 +699,19 @@ function toggleFocus() {
 
 function init() {
   renderStats();
+  renderDecisions();
   renderKanban();
   renderWorklist();
   renderLevels();
   renderFeed();
 
   document.getElementById("btnFocus").addEventListener("click", toggleFocus);
+
+  document.getElementById("btnSearch").addEventListener("click", openCommand);
+  document.getElementById("commandClose").addEventListener("click", closeCommand);
+  document.querySelector("#commandModal .modal__backdrop").addEventListener("click", closeCommand);
+  document.getElementById("commandInput").addEventListener("input", (e) => renderCommandResults(e.target.value));
+
 
   document.getElementById("levels").addEventListener("click", (e) => {
     const btn = e.target.closest(".levelbtn");
@@ -626,7 +751,7 @@ function init() {
   document.getElementById("modalClose").addEventListener("click", closeModal);
   document.querySelector("#levelModal .modal__backdrop").addEventListener("click", closeModal);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+    if (e.key === "Escape") { closeModal(); closeCommand(); }
   });
 }
 
