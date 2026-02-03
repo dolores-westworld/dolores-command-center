@@ -39,6 +39,11 @@ const data = {
       name: "In Evaluation",
       items: [
         {
+          title: "Wire Opus/Kimi API surfaces + token loading; unblock provider tests",
+          tags: ["violet", "provider"],
+          detail: { truth: "API-first routing approved; keys/endpoints missing.", blocker: "OPUS_API_KEY, KIMI_API_KEY, endpoints not provided.", decision: "Provide keys/endpoints; confirm request schema.", artifacts: ["provider-router.yaml", "decisions.log"] },
+        },
+        {
           title: "Drawer drill-down UX (bottom sheets)",
           tags: ["cyan", "ux"],
           detail: { truth: "Pending.", blocker: "Awaiting implementation.", decision: "Drawer on mobile only vs all sizes.", artifacts: [] },
