@@ -84,6 +84,12 @@ def main():
         if not any("injection_policy.yaml" in str(x) for x in rules):
             print("FAIL")
             return 1
+        if not any("PROCEED_UNSAFE_SUMMARY" in str(x) for x in rules):
+            print("FAIL")
+            return 1
+        if not any("output only availability" in str(x).lower() for x in rules):
+            print("FAIL")
+            return 1
         if not isinstance(stops, list) or "injection_detected" not in stops:
             print("FAIL")
             return 1

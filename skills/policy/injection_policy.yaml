@@ -1,6 +1,8 @@
 injection_policy:
+  id: S1_stop_and_escalate
   on_detected: stop_and_escalate
   require_owner_confirmation: true
+  owner_confirmation_string: PROCEED_UNSAFE_SUMMARY
   allowed_output_when_blocked:
     - availability
     - canonical_url
