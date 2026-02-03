@@ -44,3 +44,13 @@ skills:
     primary_provider: opus
     fallback_provider: codex
     tags: [review, governance]
+  - name: link_reader_generic
+    file: skills/link_reader_generic.yaml
+    primary_provider: kimi_2_5
+    fallback_provider: opus
+    tags: [analyze, review]
+  - name: x_link_reader
+    file: skills/x_link_reader.yaml
+    primary_provider: kimi_2_5
+    fallback_provider: opus
+    tags: [analyze, review]

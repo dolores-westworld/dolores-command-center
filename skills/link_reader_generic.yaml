@@ -1,0 +1,48 @@
+name: link_reader_generic
+version: "1.0"
+purpose: Read and summarize a URL (article/page) when content is accessible.
+inputs:
+  - name: url
+    type: string
+    required: true
+outputs:
+  - name: canonical_url
+    type: string
+  - name: availability
+    type: enum
+    notes: accessible | blocked | login_required | not_found | unsupported
+  - name: extracted
+    type: object
+    notes: title, author(optional), published_date(optional), text(optional), outbound_links(optional)
+  - name: summary
+    type: text
+  - name: key_claims
+    type: list
+  - name: evidence_quotes
+    type: list
+    notes: optional; only direct extracts; each <= 25 words
+  - name: unknowns
+    type: list
+  - name: confidence
+    type: enum
+    notes: high | medium | low
+  - name: cite_source_type
+    type: enum
+    notes: direct_extract | user_paste
+rules:
+  - never_invent_content
+  - if_extraction_failed_then_mark_availability_and_stop
+  - Use only directly extracted text or user-provided paste.
+  - Evidence quotes must be copied verbatim from extracted text and kept <= 25 words.
+  - If content is inaccessible, set availability accordingly and stop.
+stop_conditions:
+  - unsupported_content_type
+  - extraction_failed_without_content
+  - login_required
+provider_affinity:
+  primary: kimi_2_5
+  fallback:
+    - opus
+tags:
+  - analyze
+  - review

@@ -1,0 +1,44 @@
+name: x_link_reader
+version: "1.0"
+purpose: Read and summarize an X post/thread from a provided URL with strict anti-hallucination rules.
+inputs:
+  - name: url
+    type: string
+    required: true
+outputs:
+  - name: canonical_url
+    type: string
+  - name: availability
+    type: enum
+    notes: accessible | blocked | login_required | not_found
+  - name: extracted
+    type: object
+    notes: author(optional), handle(optional), timestamp(optional), text(optional), media_urls(optional), outbound_links(optional), thread_context(optional)
+  - name: summary
+    type: text
+  - name: key_claims
+    type: list
+  - name: unknowns
+    type: list
+  - name: confidence
+    type: enum
+    notes: high | medium | low
+  - name: cite_source_type
+    type: enum
+    notes: direct_extract | user_paste
+rules:
+  - never_invent_content
+  - if_extraction_failed_then_mark_availability_and_stop
+  - If URL is not an X domain/post, stop with url_not_x.
+  - Use only directly extracted post text/media metadata or user-provided paste.
+stop_conditions:
+  - url_not_x
+  - extraction_failed_without_content
+  - login_required
+provider_affinity:
+  primary: kimi_2_5
+  fallback:
+    - opus
+tags:
+  - analyze
+  - review
