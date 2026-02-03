@@ -3,8 +3,30 @@
 const data = {
   stats: [],
   decisions: [
-    { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
-    { id: "D-002", kind: "Decision", title: "Connector pilot start criteria", question: "Which single label/calendar is in scope?" },
+    {
+      id: "D-101",
+      kind: "Decision",
+      title: "Provide Opus + Kimi API endpoints",
+      question: "What base URLs/endpoints should OPUS_API_KEY and KIMI_API_KEY target (and are they OpenAI-compatible)?",
+    },
+    {
+      id: "D-102",
+      kind: "Decision",
+      title: "Confirm provider request/response schema",
+      question: "For each provider API: OpenAI-compatible chat/completions or provider-specific payloads?",
+    },
+    {
+      id: "D-103",
+      kind: "Decision",
+      title: "Drawer UX behavior on desktop",
+      question: "Should drawers be mobile-only (desktop stays modal) or drawers everywhere?",
+    },
+    {
+      id: "D-104",
+      kind: "Decision",
+      title: "Connector enablement path",
+      question: "Who/where will create+install the GitHub App and provide installation context so we can test safely?",
+    },
   ],
   decisions: [
     { id: "D-001", kind: "Decision", title: "Define what Level 8 accepts", question: "What inputs are allowed for bounded interpretation?" },
