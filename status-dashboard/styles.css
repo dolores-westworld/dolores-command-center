@@ -693,7 +693,8 @@ html.js.jsok .jswarn{ display:none; }
 .modal__close{ white-space:nowrap; }
 
 
-.decisions{display:flex;gap:10px;overflow:auto;padding-bottom:6px;}
+.decisions{display:flex;gap:10px;overflow:auto;padding-bottom:6px;scrollbar-width:none;}
+.decisions::-webkit-scrollbar{display:none;}
 .decision{
   flex:0 0 auto;
   min-width: 200px;
@@ -781,23 +782,40 @@ html.js.jsok .jswarn{ display:none; }
 }
 
 @media (max-width: 520px){
+  body{ -webkit-text-size-adjust: 100%; }
   .topbar{ padding:12px 12px; }
   .brand__tag{ display:none; }
   .hero__title h1{ font-size:22px; }
+  .hero__title p{ font-size:12px; }
   .hero__stats{ grid-template-columns: 1fr; width:100%; }
   .pill{ display:none; }
+
+  .shell{ padding:14px 12px 26px; }
   .panel{ padding:12px; }
   .panel--wide{ padding:10px 10px 6px; }
 
   /* Decisions: denser on mobile */
-  .decisions{ gap:8px; }
-  .decision{ min-width: 176px; padding:7px 9px; }
+  .decisions{ gap:8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .decision{ min-width: 170px; padding:7px 9px; scroll-snap-align:start; }
+  .decision__k{ font-size:10px; }
   .decision__t{ font-size:12px; }
   .decision__q{ font-size:11px; }
 
-  .kanban{ gap:10px; grid-template-columns: repeat(5, minmax(220px, 1fr)); }
-  .col{ min-height: 170px; }
+  /* Lists: reduce bleed and improve tapping */
+  .list{ gap:8px; }
+  .listitem{ padding:10px; }
+
+  /* Kanban: make cards easier to read */
+  .kanban{ gap:10px; grid-template-columns: repeat(5, minmax(240px, 1fr)); -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity; }
+  .col{ min-height: 160px; scroll-snap-align:start; }
+  .card{ padding:12px; }
+  .card__title{ font-size:13px; }
+
+  /* Modals/drawers still supported */
   .modal{ padding: 10px 8px; }
+
+  /* iOS safe-area padding */
+  .footer{ padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
 }
 
 .code{margin:10px 0 0;padding:10px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);overflow:auto;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.85);}
