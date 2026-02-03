@@ -1,4 +1,4 @@
-// Status Dashboard — static files only. Static data only (explicit). No network calls.
+// Status Dashboard — static files only. Sample data only. No network calls.
 
 const data = {
   stats: [],
@@ -311,15 +311,6 @@ function el(tag, cls) {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
   return node;
-function toast(msg){
-  const t = document.getElementById("toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add("toast--show");
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => t.classList.remove("toast--show"), 1200);
-}
-
 }
 
 function tagClass(tag) {
@@ -336,19 +327,7 @@ function tagClass(tag) {
 function renderStats() {
   const root = document.getElementById("stats");
   root.innerHTML = "";
-
-  const totalCards = data.kanban.reduce((n, c) => n + c.items.length, 0);
-  const blockedCol = data.kanban.find((c) => c.name === "Blocked");
-  const blocked = (blockedCol && blockedCol.items && blockedCol.items.length) ? blockedCol.items.length : 0;
-  const recentPass = (data.feed.filter((e) => e.title === "PASS" || e.title === "TEST PASS").length) || 0;
-
-  const stats = [
-    { label: "Total cards", value: String(totalCards), hint: "From Kanban" },
-    { label: "Blocked", value: String(blocked), hint: "Needs unblocking" },
-    { label: "Recent passes", value: String(recentPass), hint: "From Activity" },
-  ];
-
-  stats.forEach((s) => {
+  data.stats.forEach((s) => {
     const box = el("div", "stat");
     const l = el("div", "stat__label");
     l.textContent = s.label;
@@ -363,7 +342,35 @@ function renderStats() {
   });
 }
 
-function renderKanban()() {
+function renderDecisions() {
+  const root = document.getElementById("decisions");
+  if (!root) return;
+  root.innerHTML = "";
+
+  (data.decisions || []).forEach((d) => {
+    const card = el("button", "decision");
+    card.type = "button";
+    card.dataset.kind = "DECISION";
+    card.dataset.id = d.id;
+
+    const k = el("div", "decision__k");
+    k.textContent = d.kind;
+
+    const t = el("div", "decision__t");
+    t.textContent = d.title;
+
+    const q = el("div", "decision__q");
+    q.textContent = d.question;
+
+    card.appendChild(k);
+    card.appendChild(t);
+    card.appendChild(q);
+
+    root.appendChild(card);
+  });
+}
+
+function renderKanban() {
   const root = document.getElementById("kanban");
   root.innerHTML = "";
   data.kanban.forEach((c) => {
@@ -496,7 +503,6 @@ function renderConnectors() {
   root.innerHTML = "";
   (data.connectors || []).forEach((c) => {
     const li = el("li", "listitem");
-    li.dataset.kind = "CONNECTOR";
     li.dataset.name = c.name;
 
     const top = el("div", "listitem__top");
@@ -541,7 +547,6 @@ function renderSkills() {
 
   items.forEach((s) => {
     const li = el("li", "listitem");
-    li.dataset.kind = "SKILL";
     li.dataset.id = s.id;
 
     const top = el("div", "listitem__top");
@@ -568,7 +573,6 @@ function renderXIntake() {
   root.innerHTML = "";
   (data.x_intake || []).forEach((x) => {
     const li = el("li", "listitem");
-    li.dataset.kind = "X_ITEM";
     li.dataset.id = x.id;
 
     const top = el("div", "listitem__top");
@@ -739,7 +743,6 @@ function openFromSearch(it) {
 }
 
 function openLevel(levelObj) {
-  toast(`Open Level ${levelObj.level}`);
   if (levelObj.state === "COMPLETED") {
     openModal(
       `Level ${levelObj.level} • Completed`,
@@ -759,7 +762,6 @@ function openLevel(levelObj) {
 }
 
 function openKanbanCard(colName, titleText) {
-  toast(`Open Kanban: ${colName}`);
   const col = data.kanban.find((c) => c.name === colName);
   const item = col ? col.items.find((it) => it.title === titleText) : null;
   const d = (item && item.detail) || { truth: "Not specified.", blocker: "Not specified.", decision: "Not specified.", artifacts: [] };
@@ -787,7 +789,6 @@ function openKanbanCard(colName, titleText) {
 }
 
 function openWorkItem(titleText) {
-  toast(`Open Work Item`);
   const w = data.workingOn.find((x) => x.title === titleText);
   const d = (w && w.detail) || { doing: "Not specified.", notDoing: "Not specified.", doneMeans: [] };
 
@@ -813,7 +814,6 @@ function openWorkItem(titleText) {
 }
 
 function openActivityEvent(titleText, metaText) {
-  toast(`Open Activity`);
   const ev = data.feed.find((x) => x.title === titleText && x.meta === metaText);
   const d = (ev && ev.detail) || { changed: "Not specified.", safe: "Not specified.", ref: "" };
 
@@ -877,9 +877,7 @@ function init() {
         </div>
       `;
       main.prepend(box);
-    } catch (_) {
-      // last resort: do nothing
-    }
+    } catch (_) {}
   };
 
   try {
@@ -888,9 +886,9 @@ function init() {
     renderKanban();
     renderWorklist();
     renderLevels();
-    renderConnectors();
-    renderSkills();
-    renderXIntake();
+    if (typeof renderConnectors === "function") renderConnectors();
+    if (typeof renderSkills === "function") renderSkills();
+    if (typeof renderXIntake === "function") renderXIntake();
     renderFeed();
 
     on("btnFocus", "click", toggleFocus);
