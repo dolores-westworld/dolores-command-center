@@ -67,7 +67,45 @@ def main():
         print("FAIL")
         return 1
 
-    # 5) New skills must include tags
+    # 5) router.yaml must exist and route to real skills; regex must compile
+    router_path = root / "router.yaml"
+    if not router_path.exists():
+        print("FAIL")
+        return 1
+
+    router = mod.load_yaml(router_path)
+    if not isinstance(router, dict):
+        print("FAIL")
+        return 1
+
+    url_detection = router.get("url_detection")
+    if not isinstance(url_detection, dict) or not isinstance(url_detection.get("regex"), str):
+        print("FAIL")
+        return 1
+
+    try:
+        import re
+
+        re.compile(url_detection["regex"])
+    except Exception:
+        print("FAIL")
+        return 1
+
+    dr = router.get("domain_routing")
+    if not isinstance(dr, list) or not dr:
+        print("FAIL")
+        return 1
+
+    for rule in dr:
+        if not isinstance(rule, dict):
+            print("FAIL")
+            return 1
+        skill = rule.get("skill")
+        if skill not in names:
+            print("FAIL")
+            return 1
+
+    # 6) New skills must include tags
     for nm in ("link_reader_generic", "x_link_reader"):
         doc = mod.load_yaml(root.parent / f"skills/{nm}.yaml")
         tags = doc.get("tags") if isinstance(doc, dict) else None

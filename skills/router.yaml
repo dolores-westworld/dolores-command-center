@@ -1,0 +1,9 @@
+url_detection:
+  # Basic URL detection for intake routing (no fetching implied).
+  regex: "https?:\\/\\/[^\\s)]+"
+
+domain_routing:
+  - match_domains: ["x.com", "twitter.com"]
+    skill: x_link_reader
+  - match_domains: ["*"]
+    skill: link_reader_generic
