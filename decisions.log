@@ -1,0 +1,2 @@
+# decisions.log (append-only)
+# format: timestamp | task_id | provider_used | decision | assumptions | needs_opus_review (yes/no)

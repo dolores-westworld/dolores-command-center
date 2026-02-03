@@ -1,0 +1,46 @@
+providers:
+  opus:
+    enabled: true
+    surface_mode: "ui"   # ui | api
+    ui_handoff:
+      instruction: "Human-in-the-loop: paste the Opus task packet into the approved Opus UI session and paste the response back into chat."
+    api:
+      env_var: "OPUS_API_KEY"   # no secrets in repo
+      loaded_from: "owner-provided environment"
+
+  kimi_2_5:
+    enabled: true
+    surface_mode: "ui"   # ui | api
+    ui_handoff:
+      instruction: "Human-in-the-loop: paste the Kimi task packet into the approved Kimi UI session and paste the response back into chat."
+    api:
+      env_var: "KIMI_API_KEY"   # no secrets in repo
+      loaded_from: "owner-provided environment"
+
+  codex:
+    enabled: true
+    surface_mode: "local"   # local
+
+routing:
+  - task: "governance_judgment"
+    primary: "opus"
+    fallback: ["codex"]
+  - task: "content_summarization"
+    primary: "kimi_2_5"
+    fallback: ["codex"]
+  - task: "implementation_patch"
+    primary: "codex"
+    fallback: []
+
+decision_logging:
+  enabled: true
+  decision_log_path: "/Users/macadmin/clawdbot/work/decisions.log"
+
+stop_conditions:
+  no_retries: true
+  no_scope_expansion: true
+  if_provider_unavailable: "stop_and_escalate"
+
+governance:
+  recommendations_default: "off_unless_asked"
+  x_security_screen_first: true
