@@ -76,6 +76,16 @@ const data = {
       name: "In Evaluation",
       items: [
         {
+          title: "Overnight regression pack (100 QA cases)",
+          tags: ["cyan", "qa"],
+          detail: {
+            truth: "Feasible as scripted browser QA on staging with dummy data + strict no-side-effect guardrails.",
+            blocker: "Need staging URL/tenant + test account policy + selector strategy + a written source-of-truth test spec.",
+            decision: "Confirm allowed actions (final submit? email sends?) and where screenshots/reports will live.",
+            artifacts: ["(spec) test-case YAML", "(spec) allowlist + no-submit policy", "(spec) report format"],
+          },
+        },
+        {
           title: "Wire Opus/Kimi API surfaces + token loading; unblock provider tests",
           tags: ["violet", "provider"],
           detail: { truth: "API-first routing approved; keys/endpoints missing.", blocker: "OPUS_API_KEY, KIMI_API_KEY, endpoints not provided.", decision: "Provide keys/endpoints; confirm request schema.", artifacts: ["provider-router.yaml", "decisions.log"] },
@@ -272,6 +282,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-03 22:22 CT",
+      meta: "Idea refined: overnight agent-driven QA enters dummy data, covers conditional logic, navigates confirmation + landing/speaker/sponsor pages.",
+      detail: { changed: "Captured concrete v1 flow and guardrails needed.", safe: "Design-only; no execution.", ref: "Kanban: In Evaluation" },
+    },
     {
       title: "LOGGED",
       time: "2026-02-03 22:16 CT",
