@@ -930,6 +930,11 @@ function init() {
       console.error("Dashboard error:", err);
       const main = document.getElementById("main");
       if (!main) return;
+
+      const name = (err && err.name) ? String(err.name) : "Error";
+      const msg = (err && err.message) ? String(err.message) : "";
+      const stack = (err && err.stack) ? String(err.stack) : String(err || "");
+
       const box = document.createElement("section");
       box.className = "panel";
       box.innerHTML = `
@@ -940,24 +945,33 @@ function init() {
           </div>
         </div>
         <div class="panel__body">
-          <p class="muted">The UI failed to initialize. Try a refresh. If it persists, paste the console error.</p>
-          <pre class="code">${String(err && (err.stack || err.message || err))}</pre>
+          <p class="muted">A script error occurred. The dashboard will render what it can. If it persists, paste this error text.</p>
+          <pre class="code">${name}${msg ? ": " + msg : ""}\n\n${stack}</pre>
         </div>
       `;
       main.prepend(box);
     } catch (_) {}
   };
 
+  const safe = (label, fn) => {
+    try {
+      fn();
+    } catch (e) {
+      const msg = (e && e.message) ? e.message : String(e);
+      fatal(new Error(label + ": " + msg));
+    }
+  };
+
   try {
-    renderStats();
-    renderDecisions();
-    renderKanban();
-    renderWorklist();
-    renderLevels();
-    if (typeof renderConnectors === "function") renderConnectors();
-    if (typeof renderSkills === "function") renderSkills();
-    if (typeof renderXIntake === "function") renderXIntake();
-    renderFeed();
+    safe("renderStats", () => renderStats());
+    safe("renderDecisions", () => renderDecisions());
+    safe("renderKanban", () => renderKanban());
+    safe("renderWorklist", () => renderWorklist());
+    safe("renderLevels", () => renderLevels());
+    if (typeof renderConnectors === "function") safe("renderConnectors", () => renderConnectors());
+    if (typeof renderSkills === "function") safe("renderSkills", () => renderSkills());
+    if (typeof renderXIntake === "function") safe("renderXIntake", () => renderXIntake());
+    safe("renderFeed", () => renderFeed());
 
     on("btnFocus", "click", toggleFocus);
 
