@@ -259,6 +259,13 @@ html.js.jsok .jswarn{ display:none; }
   font-size:12px;
 }
 
+/* Optional clamp helper (mobile) */
+.subclamp{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
 .hint{
   color:var(--muted2);
   font-size:12px;
@@ -793,6 +800,9 @@ html.js.jsok .jswarn{ display:none; }
   .shell{ padding:14px 12px 26px; }
   .panel{ padding:12px; }
   .panel--wide{ padding:10px 10px 6px; }
+
+  /* Clamp long subtitles on mobile */
+  .subclamp{ -webkit-line-clamp: 2; }
 
   /* Decisions: denser on mobile */
   .decisions{ gap:8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
