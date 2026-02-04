@@ -46,6 +46,16 @@ const data = {
       name: "Ideas",
       items: [
         {
+          title: "readme.md domain: traffic + monetization strategy",
+          tags: ["violet", "growth"],
+          detail: {
+            truth: "Domain acquired; opportunity to build an owned distribution surface around docs/readmes.",
+            blocker: "Need positioning + ICP + content engine + monetization model + analytics baseline.",
+            decision: "Pick wedge: dev tooling directory vs README templates vs docs-to-site hosting; decide revenue path.",
+            artifacts: ["(spec) positioning", "(spec) content calendar", "(spec) monetization funnel"],
+          },
+        },
+        {
           title: "Gross Margin Calculator: project app folder + dashboard embed",
           tags: ["violet", "ops"],
           detail: {
@@ -312,6 +322,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-04 02:14 CT",
+      meta: "Logged: acquired readme.md domain; start traffic + monetization strategy.",
+      detail: { changed: "Captured new growth asset and planning track.", safe: "No execution; strategy only.", ref: "Kanban: Ideas" },
+    },
     {
       title: "LOGGED",
       time: "2026-02-04 00:31 CT",
