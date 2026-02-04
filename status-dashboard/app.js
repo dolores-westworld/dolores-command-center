@@ -96,7 +96,7 @@ const data = {
       name: "In Evaluation",
       items: [
         {
-          title: "QA Swarm Agents",
+          title: "QA Swarm (Overnight Regression)",
           tags: ["cyan", "qa"],
           detail: {
             truth: "Feasible as scripted browser QA on staging with dummy data + strict no-side-effect guardrails.",
