@@ -46,6 +46,16 @@ const data = {
       name: "Ideas",
       items: [
         {
+          title: "Gross Margin Calculator: project app folder + dashboard embed",
+          tags: ["violet", "ops"],
+          detail: {
+            truth: "Idea captured: package the dashboard into a project app folder for reuse.",
+            blocker: "Need target project repo/folder conventions and what 'app folder' means in that context.",
+            decision: "Confirm desired layout and how it will be deployed/used.",
+            artifacts: ["(spec) folder layout", "(spec) embed strategy"],
+          },
+        },
+        {
           title: "Automate month-end payroll (Google Sheets, 24 people)",
           tags: ["violet", "ops"],
           detail: {
@@ -302,6 +312,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-04 00:31 CT",
+      meta: "Logged idea: Gross Margin Calculator project app folder + dashboard embed.",
+      detail: { changed: "Captured as an idea in Kanban.", safe: "No execution; planning only.", ref: "Kanban: Ideas" },
+    },
     {
       title: "LOGGED",
       time: "2026-02-03 22:24 CT",
