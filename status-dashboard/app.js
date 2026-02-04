@@ -46,6 +46,26 @@ const data = {
       name: "Ideas",
       items: [
         {
+          title: "Automate month-end payroll (Google Sheets, 24 people)",
+          tags: ["violet", "ops"],
+          detail: {
+            truth: "Recurring monthly workflow; strong automation leverage.",
+            blocker: "Need current sheet structure + export/import requirements + guardrails (no financial actions without explicit confirmation).",
+            decision: "Define desired output (payroll file, summary, checks) and approval steps.",
+            artifacts: ["(spec) payroll workflow map", "(spec) checks + reconciliation steps"],
+          },
+        },
+        {
+          title: "Template + scope factory for BW Events projects (RF/Swoogo/Cvent)",
+          tags: ["cyan", "ops"],
+          detail: {
+            truth: "Standardization opportunity across recurring event builds.",
+            blocker: "Need examples of best templates/scopes + variation catalog.",
+            decision: "Pick one platform (RF/Swoogo/Cvent) to start; define minimum viable template set.",
+            artifacts: ["(spec) template taxonomy", "(spec) scope checklist"],
+          },
+        },
+        {
           title: "Agent-driven frontend QA for public registration sites",
           tags: ["cyan", "qa"],
           detail: {
@@ -282,6 +302,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-03 22:24 CT",
+      meta: "Logged: payroll automation and template/scope acceleration priorities (BW Events; RF/Swoogo/Cvent; Amego).",
+      detail: { changed: "Captured leverage targets and operational context.", safe: "No execution; planning only.", ref: "Kanban: Ideas" },
+    },
     {
       title: "LOGGED",
       time: "2026-02-03 22:22 CT",
