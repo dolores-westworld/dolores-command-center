@@ -1,0 +1,14 @@
+{
+  "name": "dolores-provider-router",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node dist/tests/smoke.test.js",
+    "pretest": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
