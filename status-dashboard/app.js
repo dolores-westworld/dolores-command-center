@@ -46,6 +46,36 @@ const data = {
       name: "Ideas",
       items: [
         {
+          title: "readme.md: Shadow Resumes (AI use-cases as 'roles')",
+          tags: ["violet", "growth"],
+          detail: {
+            truth: "Use-cases expressed as role resumes + hiring packets (templates/specs).",
+            blocker: "Need standard resume template + category system.",
+            decision: "Pick lens: industry-first vs role-first.",
+            artifacts: ['(spec) resume template', '(spec) category map', '(spec) starter pack'],
+          },
+        },
+        {
+          title: "readme.md: Prompt-Injection Zoo (safety playground)",
+          tags: ["violet", "growth"],
+          detail: {
+            truth: "Gallery of injection patterns + safe responses + policy snippets.",
+            blocker: "Need curation rules + legal/sanitization policy.",
+            decision: "Decide scope: generic web injections vs agent/tool hijacks.",
+            artifacts: ['(spec) taxonomy', '(spec) sanitization rules', '(spec) policy snippets'],
+          },
+        },
+        {
+          title: "readme.md: Agent Memory Museum (workflow time-travel exhibits)",
+          tags: ["violet", "growth"],
+          detail: {
+            truth: "Narrative exhibits for real workflows: before→transitional→future + failure/guardrails.",
+            blocker: "Need format spec + submission intake + exhibit template.",
+            decision: "Decide target audience + first 10 exhibits.",
+            artifacts: ['(spec) exhibit schema', '(spec) intake form', '(spec) content engine'],
+          },
+        },
+        {
           title: "readme.md domain: traffic + monetization strategy",
           tags: ["violet", "growth"],
           detail: {
@@ -322,6 +352,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-04 08:30 CT",
+      meta: "Logged: 3 creative readme.md concepts (Memory Museum, Prompt-Injection Zoo, Shadow Resumes).",
+      detail: { changed: "Captured as potential growth ideas.", safe: "No execution; ideation only.", ref: "Kanban: Ideas" },
+    },
     {
       title: "LOGGED",
       time: "2026-02-04 02:14 CT",
