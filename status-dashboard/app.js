@@ -46,6 +46,16 @@ const data = {
       name: "Ideas",
       items: [
         {
+          title: "Agent-driven frontend QA for public registration sites",
+          tags: ["cyan", "qa"],
+          detail: {
+            truth: "Concept review: feasible with scripted browser QA + accessibility checks, gated to avoid destructive submits.",
+            blocker: "Need a source-of-truth spec + safe test inputs + definition of done.",
+            decision: "Choose scope: critical path clicks vs full form submission; include a11y/design QA; confirm environments.",
+            artifacts: ["(spec) QA checklist", "(spec) source-of-truth assertions"],
+          },
+        },
+        {
           title: "Event-industry intel digest",
           tags: ["violet", "research"],
           detail: { truth: "Not specified.", blocker: "Not specified.", decision: "Not specified.", artifacts: [] },
@@ -262,6 +272,12 @@ const data = {
     },
   ],
   feed: [
+    {
+      title: "LOGGED",
+      time: "2026-02-03 22:16 CT",
+      meta: "Feasibility review: agent-driven frontend QA for registration sites (public) logged; scoped + gated.",
+      detail: { changed: "Captured idea + initial risk screen.", safe: "No execution; design-only.", ref: "Kanban: Ideas" },
+    },
     {
       title: "UPDATED",
       time: "2026-02-03 08:40 CT",
