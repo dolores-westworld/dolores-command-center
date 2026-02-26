@@ -16,7 +16,14 @@ When the owner provides one or more URLs.
 - 10-bullet summary
 - Key metrics (if any)
 - Decisions/recommendations (if applicable)
-- Suggested backlog tickets (max 3)
+
+## Artifact outputs (choose one)
+Offer one of:
+- **Brief** (1-pager)
+- **Backlog ticket(s)** with acceptance criteria
+- **Decision memo** (if it implies a choice)
+
+**Default:** Backlog ticket(s), unless the owner requests otherwise.
 
 ## Caching
 - Cache by canonical URL.
